@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h5>{{_('Readings')}}</h5>
+    <style>
+        .table tr td {
+            border-top-color: transparent;
+        }
+    </style>
+    <button class="btn btn-outline-light btn-block mt-3 mb-4" type="button" data-toggle="collapse" data-target="#user-collapse" aria-expanded="false" aria-controls="readings-collapse">Options</button>
+    <div class="collapse bg-dark text-light" id="user-collapse">
+        <a class="btn btn-outline-info btn-lg btn-block btn-sm mb-4 mt-4" href="{{ url_for('api_readings')}}" role="button">{{_('Download CSV')}}</a>
+        <a class="btn btn-outline-info btn-lg btn-block btn-sm mb-4" href="{{ url_for('api_readings', anon='true')}}" role="button">{{_('Download Anonymous CSV')}}</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="p-1"><small>{{_('Date')}}</small></th>
+                    <th class="p-1"><small>{{_('Temp')}}</small></th>
+                    <th class="p-1"><small>{{_('Oxi')}}</small></th>
+                    <th class="p-1"><small>{{_('Symptoms')}}</small></th>
+                    <th class="p-1"><small>{{_('Status')}}</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reading in readings %}
+                <tr onclick="location.assign('{{ url_for("single_user", id=reading.user_id)}}');">
+                    <td class="p-1">{{ reading.reading_date | replace('2020-', '')}}</td>
+                    <td class="p-1">{{ reading.temp }}</td>
+                    <td class="p-1">{{ reading.oximeter }}</td>
+                    <td class="p-1" style="text-align: center;">{% if reading.symptoms %}<span class="badge badge-danger">&plus;{% else %}<span class="badge badge-success">&minus;{% endif %}</span></td>
+                    <td class="p-1" style="text-align: center;">{% if reading.status == 'working' %}<span class="badge badge-success">{{ _('WORKING') }}{% elif reading.status == 'not working' %}<span class="badge badge-danger">{{ _('NOT WORKING') }}{% else %}<span class="badge badge-warning">{{ _('NO RECORD') }}{% endif %}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'includes/pagination.html' %}
+    </div>
+</div>
+
+{% endblock %}

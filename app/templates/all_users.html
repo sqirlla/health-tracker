@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h5>{{_('Users')}}</h5>
+    <style>
+        .table tr td {
+            border-top-color: transparent;
+        }
+    </style>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{{_('Username')}}</th>
+                    <th>{{_('Role')}}</th>
+                    <th>{{_('Active')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr onclick="location.assign('{{ url_for("single_user", id=user.id)}}');">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.roles[0].name }}</td>
+                    <td>{% if user.active %}<span class="badge badge-info">{{ _('ACTIVE') }}{% else %}<span class="badge badge-light">{{ _('INACTIVE') }}{% endif %}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary btn-lg btn-block mt-4" href="{{ url_for('new_user')}}" role="button">{{_('Add User')}}</a>
+</div>
+
+{% endblock %}

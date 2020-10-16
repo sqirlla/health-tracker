@@ -1,0 +1,14 @@
+<div class="container text-center">
+    <div class="btn-group mx-auto" role="group" aria-label="{{ _('Pagination') }}">
+        {% if prev %}
+        <a href="{{ prev }}" type="button" class="btn btn-secondary">{{ _('< Prev')}}</a>
+        {% else %}
+        <a href="" disabled type="button" class="disabled btn btn-secondary">{{ _('< Prev')}}</a>
+        {% endif %}
+        {% if next %}
+        <a href="{{ next }}" type="button" class="btn btn-secondary">{{ _('Next >')}}</a>
+        {% else %}
+        <a href="" disabled type="button" class="disabled btn btn-secondary">{{ _('Next >')}}</a>
+        {% endif %}
+    </div>
+</div>

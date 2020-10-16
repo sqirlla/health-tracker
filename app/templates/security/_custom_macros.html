@@ -1,0 +1,12 @@
+{% macro custom_render_field_with_errors(field) %}
+    {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      {% for error in field.errors %}
+      <div class="alert alert-danger">{{error}}</div>
+      {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro render_field(field) %}
+    {{ field(**kwargs)|safe }}
+{% endmacro %}

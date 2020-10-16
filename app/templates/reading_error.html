@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="card mt-4 bg-dark text-light">
+        <div class="card-body">
+          <h5 class="card-title">{{_('Something went wrong...')}}</h5>
+          <p class="card-text">{{_("We're sorry but your reading could not be recorded. This could have been a system error. Please use the link below to try again. If this continues, please report this error to your manager.")}}</p>
+          <a href="{{url_for('new_reading')}}" class="btn btn-primary">{{_('Try Again')}}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

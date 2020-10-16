@@ -1,0 +1,45 @@
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4 text-center">
+    <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" novalidate class="form-signin">
+        {{ login_user_form.hidden_tag() }}
+        <h1 class="h3 mb-3 font-weight-normal">{{_('Please sign in')}}</h1>
+
+        {{ login_user_form.email.label(class_="sr-only mt-1") }}
+        {% if login_user_form.email.errors %}
+            {{ login_user_form.email(placeholder='Username or Email', class_="form-control is-invalid text-dark mb-3") }}
+            {% for error in login_user_form.email.errors %}
+                <div class="alert alert-danger">{{error}}</div>
+            {% endfor %}
+        {% else %}
+            {{ login_user_form.email(placeholder='Username or Email', class_="form-control text-dark mb-3") }}
+        {% endif %}
+
+        {{ login_user_form.password.label(class_="sr-only mt-1") }}        
+        {% if login_user_form.password.errors %}
+            {{ login_user_form.password(placeholder='Password', class_="form-control is-invalid text-dark mb-3") }}
+        
+            {% for error in login_user_form.password.errors %}
+                <div class="alert alert-danger">{{error}}</div>
+            {% endfor %}
+        {% else %}
+            {{ login_user_form.password(placeholder='Password', class_="form-control text-dark mb-3") }}
+            
+        {% endif %}
+
+
+        <div class="checkbox mb-4 mt-4">
+          <label>
+            <input type="checkbox" value="remember-me" checked> {{_('Remember me')}}
+          </label>
+        </div>
+        {{ login_user_form.submit(class_="btn btn-lg btn-primary btn-block") }}
+        
+    </form>
+    <br />
+    &nbsp;
+    <br />
+    <a href="{{url_for_security('forgot_password')}}" class="card-link mt-4">{{_('Reset my password')}}</a>
+</div>
+{% endblock %}

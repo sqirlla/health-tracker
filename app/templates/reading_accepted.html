@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="card mt-4 bg-dark text-light">
+        <div class="card-body">
+          <h5 class="card-title">{{reading.reading_date}}</h5>
+          {% if reading.status == 'working' %}
+          <h5 class="card-subtitle mb-2 badge badge-success">{{_('Working')}}</h5>
+          {% else %}
+          <h5 class="card-subtitle mb-2 badge badge-danger">{{_('Not Working')}}</h5>
+          {% endif %}
+          {% if reading.symptoms %}
+          <h5 class="card-subtitle mb-2 badge badge-danger">{{_('Symtoms Positive')}}</h5>
+          {% else %}
+          <h5 class="card-subtitle mb-2 badge badge-success">{{_('Symtoms Negative')}}</h5>
+          {% endif %}
+          <div class="clearfix container mt-4 text-center">
+            <label class="text-muted text-center mb-0">{{_('Temperature')}}</label>
+            <div class="font-weight-bold display-4 text-center mb-4">{{reading.temp}} {{ units | safe }}</div>
+            <label class="text-muted text-center mb-0">{{_('Oximeter')}}</label>
+            <div class="font-weight-bold display-4 text-center mb-4">{{reading.oximeter}} &#37;</div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

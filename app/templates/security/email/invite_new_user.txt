@@ -1,0 +1,6 @@
+An account has been created for you on the {{ org }} Health Tracker system. \n   
+Please click the link below to set your password and activate your account.    \n\n
+
+{{ reset_link }}\n\n
+
+This link will expire in 5 days.    

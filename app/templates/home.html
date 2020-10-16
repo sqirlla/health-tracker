@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<style>
+    .table tr td {
+        border-top-color: transparent;
+    }
+</style>
+<div class="container mt-4">
+    <h4 class="">{{_('Hello,')}} {% if user.username %}{{user.username}}{% else %}{{ user.email }}{% endif %}</h4>
+    {% if user.has_role('admin') %}
+    {% else %}
+    <p class="lead">{{_('Please provide a daily record of your temperature and oximeter readings.')}}</p>
+    {% endif %}
+    <hr class="my-4">
+    {% if current_user.reading_today() %}
+    <a class="btn btn-secondary btn-lg btn-block disabled mb-4" disabled href="{{ url_for('new_reading')}}" role="button" aria-disabled="true">{{_('Add New Reading')}}</a>
+    <div class="mt-2 h5"><span><em>{{_('You have already recorded a reading today')}}</em></span></div>
+    <div class="mt-2 h5 text-info" onclick="location.assign('{{ url_for("home")}}');"><span><i class="fas fa-sync"></i> <em>{{_('Tap here to refresh and check if you need to record another reading.')}}</em></span></div>
+    {% else %}
+    <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('new_reading')}}" role="button">{{_('Add New Reading')}}</a>
+    {% endif %}
+    
+    {% if user.has_role('employee') %}
+    <hr class="mt-4" />
+        {% if user.readings|length > 0 %}
+        <div class="list-group bg-dark text-light">
+            {% for reading in user.readings[0:9] %}
+            <div class="list-group-item bg-dark text-light">
+                <div class="d-flex w-100 justify-content-between align-middle">
+                    <h5 class="mb-0">{{reading.reading_date}}</h5>
+                    {% if reading.status == 'working' %}
+                    <div class="badge badge-success mt-1 mb-1">{{_('WORKING')}}</div>
+                    {% else %}
+                    <div class="badge badge-danger mt-1 mb-1">{{_('NOT WORKING')}}</div>
+                    {% endif %}
+                </div>
+                <div class="clearfix container mt-2 text-center d-flex">
+                    <div class="p-2 flex-fill w-50">
+                        <label class="text-muted text-center mb-0">{{_('Temperature')}}</label>
+                        <div class="h4 font-weight-bold text-center mb-4">{{reading.temp}} &#8457;</div>
+                    </div>
+                    <div class="p-2 flex-fill w-50">
+                        <label class="text-muted text-center mb-0">{{_('Oximeter')}}</label>
+                        <div class="h4 font-weight-bold text-center mb-4">{{reading.oximeter}} &#37;</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div><span class="text-muted"><em>{{ _('You have not recorded any readings yet.') }}</em></span></div>
+        {% endif %}
+    {% endif %}
+    {% if user.has_role('admin') %}
+    <h5 class="mt-4">{{ _("Today's Readings") }} - {{ today }}</h5>
+    <div class="table-responsive mt-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="p-1"><small>{{_('Username')}}</small></th>
+                    <th class="p-1"><small>{{_('Temp')}}</small></th>
+                    <th class="p-1"><small>{{_('Oxi')}}</small></th>
+                    <th class="p-1"><small>{{_('Symptoms')}}</small></th>
+                    <th class="p-1"><small>{{_('Status')}}</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users if user.active%}
+                
+                <tr onclick="location.assign('{{ url_for("single_user", id=user.id)}}');">
+                    <td class="p-1">{{ user.username }}</td>
+                    {% if user.readings and user.readings[0].reading_date == today %}
+                    <td class="p-1">{{ user.readings[0].temp }}</td>
+                    <td class="p-1">{{ user.readings[0].oximeter }}</td>
+                    <td class="p-1" style="text-align: center;">{% if user.readings[0].symptoms %}<span class="badge badge-danger">&plus;{% else %}<span class="badge badge-success">&minus;{% endif %}</span></td>
+                    <td class="p-1">{% if user.readings[0].status == 'working' %}<span class="badge badge-success">{{ _('WORKING') }}{% elif user.readings[0].status == 'not working' %}<span class="badge badge-danger">{{ _('NOT WORKING') }}{% else %}<span class="badge badge-warning">{{ _('NO RECORD') }}{% endif %}</span></td>
+                    {% else %}
+                    <td class="p-1">{{_('-')}}</td>
+                    <td class="p-1">{{_('-')}}</td>
+                    <td class="p-1">{{_('-')}}</td>
+                    <td class="p-1"><span class="badge badge-warning">{{ _('NO RECORD') }}</span></td>
+                    {% endif %}
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4 class="text-center">{{_('Add Reading')}}</h4>
+    <form class="form" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ form.temp.label }} 
+        <div class="input-group mb-3">
+            {% if form.temp.errors %}
+            {{ form.temp(placeholder="00.0", class_="form-control form-control-lg is-invalid") }}
+            <div class="input-group-append">
+              <span class="input-group-text">{{ units | safe }}</span>
+            </div>
+            {% for error in form.temp.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% else %}
+            {{ form.temp(placeholder="00.0", class_="form-control form-control-lg") }}
+            <div class="input-group-append">
+              <span class="input-group-text">{{ units | safe }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {{ form.oximeter.label }} 
+        <div class="input-group mb-3">
+            {% if form.oximeter.errors %}
+            {{ form.oximeter(placeholder="00.0", class_="form-control form-control-lg is-invalid") }}
+            <div class="input-group-append">
+              <span class="input-group-text">&#37;</span>
+            </div>
+            {% for error in form.oximeter.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% else %}
+            {{ form.oximeter(placeholder="00.0", class_="form-control form-control-lg") }}
+            <div class="input-group-append">
+              <span class="input-group-text">&#37;</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="input-group mt-5 mb-5">
+          <div class="form-check">
+            {% if form.symptoms.errors %}
+            {{ form.symptoms(class_="form-check-input is-invalid", onchange="toggleSymptoms(this);") }}
+            
+            {% for error in form.symptoms.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% else %}
+            {{ form.symptoms(class_="form-check-input", onchange="toggleSymptoms(this);") }}
+            
+            {% endif %}
+            {{ form.symptoms.label }} 
+          </div>
+          <div class="input-group mt-3">
+            <a type="button" class="btn btn-outline-light btn-block" data-toggle="modal" data-target="#symptomsModal">
+              {{_('What are COVID-19 symptoms?')}}
+            </a>
+          </div>
+      </div>
+        <div class="mb-4">
+            <label class="form-text text-muted">{{_('I confirm that I am feeling healthy enough to be at work and that my temperature reading is below our defined threshold for safety')}}</label>
+        {{ form.working_btn(class_="btn btn-success btn-lg btn-block") }} 
+        </div>
+        <div class="mb-4">
+            <label class="form-text text-muted">{{_('I confirm that my temperature reading was over 100 degrees and I went home')}}</label>
+        {{ form.not_working_btn(class_="btn btn-danger btn-lg btn-block") }} 
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="symptomsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="symptomsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="symptomsModalLabel">{{_('COVID-19 Symptoms')}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{_('COVID-19 symptoms may include:')}}</p>
+        <ul>
+          <li>{{_('Fever or chills')}}</li>
+          <li>{{_('Cough')}}</li>
+          <li>{{_('Shortness of breath or difficulty breathing')}}</li>
+          <li>{{_('Fatigue')}}</li>
+          <li>{{_('Muscle or body aches')}}</li>
+          <li>{{_('Headache')}}</li>
+          <li>{{_('New loss of taste or smell')}}</li>
+          <li>{{_('Sore throat')}}</li>
+          <li>{{_('Congestion or runny nose')}}</li>
+          <li>{{_('Nausea or vomiting')}}</li>
+          <li>{{_('Diarrhea')}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_('Close')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function toggleSymptoms(e) {
+    if (e.checked) {
+      document.getElementById('working_btn').setAttribute("disabled", "");
+    } else {
+      document.getElementById('working_btn').removeAttribute('disabled');
+    }
+  }
+</script>
+{% endblock %}

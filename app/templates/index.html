@@ -1,0 +1,10 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4 class="mb-4">{{ _('Welcome to the Sqirl Health Tracker system') }}</h4>
+    <p class="text-muted">{{ _('Please use the button below to sign in and record your readings. To register for an account, please speak with your supervisor.')}}
+    <a class="btn btn-primary btn-lg btn-block mb-4 mt-4" href="{{ url_for_security('login')}}" role="button">{{_('Sign In')}}</a>
+    <p class="text-muted">If you have been invited to the system but have not yet logged in, please check your email for your activation link.</p>
+    <p class="text-muted">If you are having problems with your password, please <a href="{{ url_for_security('forgot_password') }}">Reset Your Password</a> before attempting to sign in again.</p>
+</div>
+{% endblock %}

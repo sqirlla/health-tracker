@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4 class="text-center">{{_('Add User')}}</h4>
+    <form class="form" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ form.email.label }} 
+        <div class="input-group mb-3">
+            {{ form.email(placeholder="Email", class_="form-control form-control-lg") }}
+        </div>
+
+        {{ form.username.label }} 
+        <div class="input-group mb-3">
+            {{ form.username(placeholder="Username", class_="form-control form-control-lg") }}
+        </div>
+        {{ form.roles.label }} 
+        <div class="input-group mb-3">
+            {{ form.roles(placeholder="Select...", class_="custom-select custom-select-lg") }}
+        </div>
+       
+        <div class="input-group mt-4 mb-4">
+           {{ form.submit(class_="btn btn-primary btn-lg btn-block")}}
+        </div>
+    </form>
+    <p class="text-muted">{{_('Provide an email address, username (first.last), and choose a user role. The user will be sent an email to confirm their account and change their password. Users will not be able to login until their account is confirmed.')}}</p>
+</div>
+{% endblock %}

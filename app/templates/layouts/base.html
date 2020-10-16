@@ -1,0 +1,9 @@
+{% extends "bootstrap/base.html" %}
+
+{% block body_attribs %} class="bg-dark text-light"{% endblock %}
+
+{% block body %}
+    {% include 'includes/nav.html' %}
+    {% include 'includes/flash_messages.html' %}
+    {{ super() }}
+{% endblock %}

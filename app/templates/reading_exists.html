@@ -1,0 +1,8 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4 class="text-center">{{_('Reading Completed')}}</h4>
+    <p class="mt-4 mb-4">{{_('You have already provided a reading for today. Readings cannot be modified or deleted.')}}</p>
+    <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('home')}}" role="button">{{_('Home')}}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+An error occurred in the system and prevented an action from being taken.  \n   
+This could be serious or it could be a case of the server being overloaded. The error details are listed below:    \n\n
+
+{{ error }}\n\n

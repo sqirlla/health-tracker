@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4 bg-dark">
+    <div class="card bg-dark text-light mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.username }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
+          {% if user.active %}
+            <h6><span class="badge badge-info">{{ _('ACTIVE') }}
+            {% else %}
+            <h6><span class="badge badge-light">{{ _('INACTIVE') }}
+            {% endif %}</span></h6>
+          <button class="btn btn-outline-light btn-block mt-3" type="button" data-toggle="collapse" data-target="#user-collapse" aria-expanded="false" aria-controls="user-collapse">{{_('Options')}}</button>
+          <div class="collapse bg-dark text-light mt-4" id="user-collapse">
+  
+                <form method="post" action="{{ url_for('send_reminder', user_id=user.id, return=request.path) }}" name="send_reminder_form">
+                    <button  type="submit" class="btn btn-sm btn-block btn-outline-danger mb-4">{{_('Send Reading Reminder')}}</button>
+                </form>
+                    <a href="{{ url_for('api_readings_user', user_id=user.id) }}" class="btn btn-sm btn-block btn-outline-info mb-4 mt-4">{{_('Download User CSV')}}</a>
+                    <a href="{{ url_for('api_readings_user', user_id=user.id, anon='true') }}" class="btn btn-sm btn-block btn-outline-info">{{_('Download Anonymous CSV')}}</a>
+                <form method="post" action="{{ url_for('resend_invitation', user_id=user.id, return=request.path) }}" name="send_reminder_form">
+                    <button type="submit" class="btn btn-sm btn-block btn-outline-light mt-4">{{_('Re-Send Invitation Email')}}</button>
+                </form>
+                {% if user.active %}
+                <form method="post" action="{{ url_for('deactivate_user', user_id=user.id, return=request.path) }}" name="deactivate_form">
+                    <button type="submit" class="btn btn-sm btn-block btn-danger mt-4">{{_('Deactivate User')}}</button>
+                </form>
+                {% else %}
+                <form method="post" action="{{ url_for('activate_user', user_id=user.id, return=request.path) }}" name="activate_form">
+                    <button type="submit" class="btn btn-sm btn-block btn-success mt-4">{{_('Activate User')}}</button>
+                </form>
+                {% endif %}
+  
+          </div>
+            
+        </div>
+        
+    </div>
+    <style>
+        .table tr td {
+            border-top-color: transparent;
+        }
+    </style>
+    <h5>{{_('Readings')}} - <small class="text-muted">{{ _('most recent three weeks')}}</small></h5>
+    <div class="table-responsive bg-dark">
+        <table class="table table-borderless table-sm bg-dark">
+            <thead>
+                <tr>
+                    <th class="p-1"><small>{{_('Date')}}</small></th>
+                    <th class="p-1"><small>{{_('Temp')}}</small></th>
+                    <th class="p-1"><small>{{_('Oxi.')}}</small></th>
+                    <th class="p-1"><small>{{_('Symp.')}}</small></th>
+                    <th class="p-1"><small>{{_('Status')}}</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reading in user.readings[:21] %}
+                <tr>
+                    <td class="text-muted p-1">{{ reading.reading_date }}</td>
+                    <td class="p-1">{{ reading.temp }}</td>
+                    <td class="p-1">{{ reading.oximeter }}</td>
+                    <td class="p-1" style="text-align: center;">{% if reading.symptoms %}<span class="badge badge-danger">&plus;{% else %}<span class="badge badge-success">&minus;{% endif %}</span></td>
+                    <td class="p-1">{% if reading.status == 'working' %}<span class="badge badge-success">{{ _('WORKING') }}{% else %}<span class="badge badge-danger">{{ _('NOT WORKING') }}{% endif %}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

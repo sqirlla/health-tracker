@@ -1,0 +1,11 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h4>{{ _('System Error...') }}</h4>
+    <div class="mb-4">
+        <p>{{ _('Sorry, there was a system error. Please try going back and attempting your action again.')}}</p>
+        <p>{{ _('If this error continues, you may notify your supervisor, but a copy of the error has already been logged with the technical team.')}}</p>
+    </div>
+    <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('home')}}" role="button">{{_('Home')}}</a>
+</div>
+{% endblock %}

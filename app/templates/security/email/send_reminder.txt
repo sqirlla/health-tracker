@@ -1,0 +1,4 @@
+This is a reminder that you are required to record health readings each day. \n   
+Use the link below to log into the {{ org }} Health Tracker system and record your readings for today.    \n\n
+
+{{ link }}\n\n
